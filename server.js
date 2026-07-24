@@ -3667,101 +3667,106 @@ app.get("/descargar-respaldo/:respaldo/:archivo", (req, res) => {
 });
 
 app.listen(3000, () => {
-
     console.log("Servidor ejecutándose en puerto 3000");
 
-// ============================================
-// VERIFICACIÓN AUTOMÁTICA DE CIERRE
-// ============================================
-console.log("⏰ Iniciando monitor de cierre académico...");
+    // ============================================
+    // VERIFICACIÓN AUTOMÁTICA DE CIERRE
+    // ============================================
+    console.log("⏰ Iniciando monitor de cierre académico...");
 
-setInterval(() => {
-    // Verificar si la conexión está activa antes de ejecutar
-    if (!conexion || conexion.state !== 'authenticated') {
-        console.warn("⚠️ Conexión no disponible, saltando verificación de cierre");
-        return;
-    }
-
-    conexion.query(
-        `
-        SELECT *
-        FROM control_academico
-        WHERE id = 1
-        `,
-        (err, resultado) => {
-            if (err) {
-                console.error("❌ Error en verificación de cierre:", err.message);
-                return;
-            }
-
-            if (!resultado || resultado.length === 0) {
-                console.warn("⚠️ No se encontró control_academico");
-                return;
-            }
-
-            const control = resultado[0];
-            const ahora = new Date();
-
-            //====================================
-            // BLOQUEAR NOTAS
-            //====================================
-            if (
-                control.cierre_notas_ejecutado == 0 &&
-                control.fecha_cierre_notas &&
-                ahora >= new Date(control.fecha_cierre_notas)
-            ) {
-                conexion.query(
-                    `
-                    UPDATE control_academico
-                    SET
-                        notas_bloqueadas = 1,
-                        cierre_notas_ejecutado = 1,
-                        fecha_cierre_notas = NULL
-                    WHERE id = 1
-                    `,
-                    (err, updateResultado) => {
-                        if (err) {
-                            console.error("❌ Error bloqueando notas:", err);
-                            return;
-                        }
-                        if (updateResultado && updateResultado.affectedRows > 0) {
-                            console.log("🔒 Notas bloqueadas automáticamente.");
-                        }
-                    }
-                );
-            }
-
-            //====================================
-            // BLOQUEAR CONDUCTA
-            //====================================
-            if (
-                control.cierre_conducta_ejecutado == 0 &&
-                control.fecha_cierre_conducta &&
-                ahora >= new Date(control.fecha_cierre_conducta)
-            ) {
-                conexion.query(
-                    `
-                    UPDATE control_academico
-                    SET
-                        conducta_bloqueada = 1,
-                        cierre_conducta_ejecutado = 1,
-                        fecha_cierre_conducta = NULL
-                    WHERE id = 1
-                    `,
-                    (err, updateResultado) => {
-                        if (err) {
-                            console.error("❌ Error bloqueando conducta:", err);
-                            return;
-                        }
-                        if (updateResultado && updateResultado.affectedRows > 0) {
-                            console.log("🔒 Conducta bloqueada automáticamente.");
-                        }
-                    }
-                );
-            }
+    setInterval(() => {
+        // Verificar si la conexión está activa antes de ejecutar
+        if (!conexion || conexion.state !== 'authenticated') {
+            console.warn("⚠️ Conexión no disponible, saltando verificación de cierre");
+            return;
         }
-    );
-}, 5000);
+
+        conexion.query(
+            `
+            SELECT *
+            FROM control_academico
+            WHERE id = 1
+            `,
+            (err, resultado) => {
+                if (err) {
+                    console.error("❌ Error en verificación de cierre:", err.message);
+                    return;
+                }
+
+                if (!resultado || resultado.length === 0) {
+                    console.warn("⚠️ No se encontró control_academico");
+                    return;
+                }
+
+                const control = resultado[0];
+                const ahora = new Date();
+
+                //====================================
+                // BLOQUEAR NOTAS
+                //====================================
+                if (
+                    control.cierre_notas_ejecutado == 0 &&
+                    control.fecha_cierre_notas &&
+                    ahora >= new Date(control.fecha_cierre_notas)
+                ) {
+                    conexion.query(
+                        `
+                        UPDATE control_academico
+                        SET
+                            notas_bloqueadas = 1,
+                            cierre_notas_ejecutado = 1,
+                            fecha_cierre_notas = NULL
+                        WHERE id = 1
+                        `,
+                        (err, updateResultado) => {
+                            if (err) {
+                                console.error("❌ Error bloqueando notas:", err);
+                                return;
+                            }
+                            if (updateResultado && updateResultado.affectedRows > 0) {
+                                console.log("🔒 Notas bloqueadas automáticamente.");
+                            }
+                        }
+                    );
+                }
+
+                //====================================
+                // BLOQUEAR CONDUCTA
+                //====================================
+                if (
+                    control.cierre_conducta_ejecutado == 0 &&
+                    control.fecha_cierre_conducta &&
+                    ahora >= new Date(control.fecha_cierre_conducta)
+                ) {
+                    conexion.query(
+                        `
+                        UPDATE control_academico
+                        SET
+                            conducta_bloqueada = 1,
+                            cierre_conducta_ejecutado = 1,
+                            fecha_cierre_conducta = NULL
+                        WHERE id = 1
+                        `,
+                        (err, updateResultado) => {
+                            if (err) {
+                                console.error("❌ Error bloqueando conducta:", err);
+                                return;
+                            }
+                            if (updateResultado && updateResultado.affectedRows > 0) {
+                                console.log("🔒 Conducta bloqueada automáticamente.");
+                            }
+                        }
+                    );
+                }
+            }
+        );
+    }, 5000);
+}); // <--- CIERRA app.listen
+
+// ============================================
+// EXPORTAR PARA USAR EN OTROS ARCHIVOS
+// ============================================
+module.exports = app;
 
 //AQUI SAHID
 app.post("/solicitar-restablecer-asistencia", (req, res) => {
