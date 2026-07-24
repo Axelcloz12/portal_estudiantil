@@ -965,10 +965,7 @@ async function cargarForoDocente() {
 
         let respuestasHTML = "";
 
-        const respuestaRespuestas =
-            await fetch(apiUrl(
-                `/respuestas-foro/${f.id}`
-            );
+const respuestaRespuestas = await fetch(apiUrl(`/respuestas-foro/${f.id}`));
 
         const respuestas =
             await respuestaRespuestas.json();
