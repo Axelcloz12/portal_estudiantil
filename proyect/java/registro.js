@@ -269,22 +269,22 @@ async function registrar() {
 
         // ✅ CORREGIDO: Usar ruta relativa en lugar de localhost
         const res = await fetch(
-            "/registrar",  // 👈 CAMBIADO
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    nombre: nombreCompleto,
-                    password: pass,
-                    rol: rol,
-                    curso: cursoAlumno,
-                    especialidad: especialidadAlumno,
-                    materias: materiasSeleccionadas
-                })
-            }
-        );
+    apiUrl("/registrar"),
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            nombre: nombreCompleto,
+            password: pass,
+            rol: rol,
+            curso: cursoAlumno,
+            especialidad: especialidadAlumno,
+            materias: materiasSeleccionadas
+        })
+    }
+);
 
         const data = await res.json();
 
