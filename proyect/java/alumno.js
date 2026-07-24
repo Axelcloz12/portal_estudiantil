@@ -32,7 +32,7 @@ async function cargarForoAlumno() {
         let respuestasHTML = "";
 
 const respuestaRespuestas =
-    await fetchfetch(apiUrl("/respuestas-foro/${f.id}"));
+    await fetch(apiUrl("/respuestas-foro/${f.id}"));
 
 const respuestas =
     await respuestaRespuestas.json();
