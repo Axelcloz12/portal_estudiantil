@@ -1599,8 +1599,8 @@ async function cargarDatosDocentePerfil(){
     try{
 
         const respuesta =
-            await fetch(
-                `http://localhost:3000/datos-docente/${sesion.id}`
+            await fetch(apiUrl(
+                `/datos-docente/${sesion.id}`)
             );
 
         const datos =
@@ -1701,8 +1701,8 @@ async function cargarHistorialAsistencia(
     paralelo
 ) {
 
-    const respuesta = await fetch(
-        `http://localhost:3000/asistencias-paralelo/${paralelo}`
+    const respuesta = await fetch(apiUrl(
+        `/asistencias-paralelo/${paralelo}`)
     );
 
     const registros = await respuesta.json();
@@ -1812,8 +1812,8 @@ async function guardarDocente(){
         document.getElementById("dFormacion").value.trim();
 
     try{
-        const respuesta = await fetch(
-            "http://localhost:3000/guardar-perfil-docente",
+        const respuesta = await fetch(apiUrl(
+            "/guardar-perfil-docente"),
             {
                 method:"POST",
                 headers:{
@@ -1938,8 +1938,8 @@ function desbloquearPerfilDocente(){
 async function mostrarPerfilProfesor(idDocente){
 
     const respuesta =
-        await fetch(
-            `http://localhost:3000/perfil-docente/${idDocente}`
+        await fetch(apiUrl(
+            `/perfil-docente/${idDocente}`
         );
 
     const datos =
@@ -2320,9 +2320,9 @@ async function notasEstanBloqueadas(){
 
 async function conductaEstaBloqueada(){
 
-    const respuesta = await fetch(
+    const respuesta = await fetch(apiUrl(
 
-        "http://localhost:3000/estado-control-academico"
+        "/estado-control-academico")
 
     );
 
@@ -2336,8 +2336,8 @@ async function conductaEstaBloqueada(){
 
 async function verificarBloqueoNotas(){
 
-    const respuesta = await fetch(
-        "http://localhost:3000/estado-control-academico"
+    const respuesta = await fetch(apiUrl(
+        "/estado-control-academico")
     );
 
     const datos = await respuesta.json();
@@ -2354,8 +2354,8 @@ async function verificarBloqueoNotas(){
 
 async function verificarBloqueoConducta(){
 
-    const respuesta = await fetch(
-        "http://localhost:3000/estado-control-academico"
+    const respuesta = await fetch(aapiUrl(
+        "/estado-control-academico")
     );
 
     const datos = await respuesta.json();
