@@ -1505,3 +1505,82 @@ async function confirmarEditarMateria(idAsignacion) {
         alert("❌ " + (error.message || "Error al modificar la materia"));
     }
 }
+
+
+// ============================================
+// ASIGNAR TODOS LOS ALUMNOS NUEVOS
+// ============================================
+async function asignarTodosNuevos() {
+    try {
+        const respuesta = await fetch(apiUrl("/alumnos-pendientes"));
+        const alumnos = await respuesta.json();
+
+        if (alumnos.length === 0) {
+            alert("✅ No hay alumnos pendientes por asignar.");
+            return;
+        }
+
+        let confirmar = confirm(
+            `⚠️ ¿Estás seguro de asignar automáticamente a ${alumnos.length} alumnos?\n\n` +
+            `Se asignarán a paralelos según su curso y especialidad.`
+        );
+
+        if (!confirmar) return;
+
+        let asignados = 0;
+        let errores = 0;
+
+        for (const alumno of alumnos) {
+            try {
+                let curso = alumno.curso || "8";
+                let especialidad = alumno.especialidad || "";
+                let paralelo = "A";
+
+                if (curso.includes("BGU")) {
+                    if (especialidad.toLowerCase().includes("computacion") || 
+                        especialidad.toLowerCase().includes("computación")) {
+                        paralelo = "A";
+                    } else if (especialidad.toLowerCase().includes("contabilidad")) {
+                        paralelo = "B";
+                    } else {
+                        paralelo = "A";
+                    }
+                }
+
+                const res = await fetch(apiUrl("/asignar-alumno"), {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        usuario_id: alumno.usuario_id,
+                        curso: curso,
+                        paralelo: paralelo
+                    })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    asignados++;
+                } else {
+                    errores++;
+                    console.error(`❌ Error asignando a ${alumno.nombre}:`, data);
+                }
+            } catch (error) {
+                errores++;
+                console.error(`❌ Error con ${alumno.nombre}:`, error);
+            }
+        }
+
+        alert(
+            `✅ Asignación completada\n\n` +
+            `📊 Alumnos asignados: ${asignados}\n` +
+            `❌ Errores: ${errores}`
+        );
+
+        cargarPanelRector();
+
+    } catch (error) {
+        console.error("❌ Error en asignarTodosNuevos:", error);
+        alert("❌ Error al asignar alumnos.");
+    }
+}
