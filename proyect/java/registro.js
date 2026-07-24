@@ -241,8 +241,9 @@ async function registrar() {
 
         }
 
+        // ✅ CORREGIDO: Usar ruta relativa en lugar de localhost
         const existeRes = await fetch(
-            "http://localhost:3000/verificar-usuario",
+            "/verificar-usuario",  // 👈 CAMBIADO
             {
                 method: "POST",
                 headers: {
@@ -266,8 +267,9 @@ async function registrar() {
 
         }
 
+        // ✅ CORREGIDO: Usar ruta relativa en lugar de localhost
         const res = await fetch(
-            "http://localhost:3000/registrar",
+            "/registrar",  // 👈 CAMBIADO
             {
                 method: "POST",
                 headers: {
