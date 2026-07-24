@@ -480,8 +480,8 @@ alumnosBase.bachillerato[carreraNueva][nuevoParalelo]
 
    try {
 
-    await fetch(
-        "http://localhost:3000/mover-usuario",
+    await fetch(apiUrl(
+        "/mover-usuario"),
         {
             method: "POST",
             headers: {
@@ -723,7 +723,7 @@ async function asignarMateriaDocente(docenteId) {
 }
 async function cargarDocentesAsignados() {
     try {
-        const res = await fetch("http://localhost:3000/docentes-asignados");
+        const res = await fetch(apiUrl("/docentes-asignados"));
         if (!res.ok) return;
         
         const data = await res.json();
@@ -994,7 +994,7 @@ async function cargarHorario() {
         await resHorario.json();
 
     const resDocentes =
-        await fetch("http://localhost:3000/docentes-asignados");
+        await fetch(apiUrl("/docentes-asignados"));
 
     const docentes =
         await resDocentes.json();
@@ -1205,8 +1205,8 @@ async function guardarHorario() {
     }
 
     try {
-        const res = await fetch(
-            `http://localhost:3000/horario/guardar?idCurso=${idCurso}`,
+        const res = await fetch(apiUrl(
+            `/horario/guardar?idCurso=${idCurso}`),
             {
                 method: "POST",
                 headers: {
@@ -1474,7 +1474,7 @@ async function confirmarEditarMateria(idAsignacion) {
     }
 
     try {
-        const response = await fetch("http://localhost:3000/editar-materia", {
+        const response = await fetch(apiUrl("/editar-materia"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
