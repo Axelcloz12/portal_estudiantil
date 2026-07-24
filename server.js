@@ -36,20 +36,20 @@ const upload = multer({
     storage
 });
 // ============================================
-// CONEXIÓN A MYSQL EN RAILWAY 
+// CONEXIÓN A MYSQL EN RAILWAY (URL PÚBLICA)
 // ============================================
+
 const conexion = mysql.createConnection({
-    host: process.env.DB_HOST || "localhost",
-    user: process.env.DB_USER || "root",
-    password: process.env.DB_PASSWORD || "123456",
-    database: process.env.DB_NAME || "portal_estudiantil",
-    port: parseInt(process.env.DB_PORT) || 3306,
-    // IMPORTANTE: Railway requiere SSL
+    uri: process.env.DATABASE_URL,
     ssl: {
-        rejectUnauthorized: false
+        rejectUnauthorized: false  // IMPORTANTE para Railway
     },
-    connectTimeout: 10000
+    connectTimeout: 15000,
+    // Aumentar límites para conexiones lentas
+    acquireTimeout: 15000,
+    timeout: 15000
 });
+
 
 function verificarCarpetaRespaldos() {
 
