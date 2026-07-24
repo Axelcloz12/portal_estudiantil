@@ -35,20 +35,20 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage
 });
-// Crear una conexión con la base de datos MySQL
+// ============================================
+// CONEXIÓN A MYSQL EN RAILWAY
+// ============================================
 const conexion = mysql.createConnection({
-
-    // Dirección del servidor donde se encuentra la base de datos
-    host: "localhost",
-
-    // Usuario con permisos para acceder a MySQL
-    user: "root",
-
-    // Contraseña del usuario de MySQL
-    password: "123456",
-
-    // Nombre de la base de datos que utilizará la aplicación
-    database: "portal_estudiantil"
+    host: process.env.DB_HOST || "localhost",
+    user: process.env.DB_USER || "root",
+    password: process.env.DB_PASSWORD || "123456",
+    database: process.env.DB_NAME || "portal_estudiantil",
+    port: parseInt(process.env.DB_PORT) || 3306,
+    // IMPORTANTE: Railway requiere SSL
+    ssl: {
+        rejectUnauthorized: false
+    },
+    connectTimeout: 10000
 });
 
 function verificarCarpetaRespaldos() {
