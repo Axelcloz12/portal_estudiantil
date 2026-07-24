@@ -490,13 +490,16 @@ function crearUsuarioSoporte(callback){
 
 
 // ============================================
-// VERIFICAR CONEXIÓN CON RECONEXIÓN AUTOMÁTICA
+// FUNCIÓN DE RECONEXIÓN CON LOGS
 // ============================================
 function conectarMySQL() {
+    console.log("========================================");
     console.log("🔄 Intentando conectar a MySQL en Railway...");
-    console.log("   Host:", process.env.DB_HOST || "localhost");
-    console.log("   User:", process.env.DB_USER || "root");
-    console.log("   Database:", process.env.DB_NAME || "portal_estudiantil");
+    console.log("📡 Host:", process.env.DB_HOST);
+    console.log("🔌 Puerto:", process.env.DB_PORT);
+    console.log("🗄️  Base de datos:", process.env.DB_NAME);
+    console.log("👤 Usuario:", process.env.DB_USER);
+    console.log("========================================");
     
     conexion.connect((error) => {
         if (error) {
@@ -504,7 +507,7 @@ function conectarMySQL() {
             console.log("⏳ Reintentando en 5 segundos...");
             setTimeout(conectarMySQL, 5000);
         } else {
-            console.log("✅ Conectado exitosamente a MySQL en Railway");
+            console.log("✅✅✅ CONEXIÓN EXITOSA a MySQL en Railway ✅✅✅");
             verificarCarpetaRespaldos();
         }
     });
