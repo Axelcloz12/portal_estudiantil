@@ -33,7 +33,7 @@ async function asignarUsuario(nombreCompleto, paraleloClave) {
     try {
 
         // 🔹 1. obtener usuario desde backend
-        const res = await fetch("http://localhost:3000/usuarios");
+        const res = await fetch(apiUrl("/usuarios"));
         const usuarios = await res.json();
 
         let usuario = usuarios.find(u => u.nombre === nombreCompleto);
@@ -43,7 +43,7 @@ async function asignarUsuario(nombreCompleto, paraleloClave) {
         }
 
         // 🔹 2. actualizar en MySQL
-        const updateRes = await fetch("http://localhost:3000/asignar-usuario", {
+        const updateRes = await fetch(apiUrl("/asignar-usuario"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -236,8 +236,7 @@ async function restablecerFechaInicio(autorizacionId) {
 
     try {
 
-        const respuesta = await fetch(
-            "http://localhost:3000/restablecer-fecha",
+        const respuesta = await fetch(apiUrl("/restablecer-fecha"),
             {
                 method: "POST",
                 headers:{
@@ -514,7 +513,7 @@ async function eliminarAlumno(id, paralelo) {
         if (!confirmar) return;
 
         // 🔹 eliminar en backend MySQL
-        const res = await fetch("http://localhost:3000/eliminar-usuario", {
+        const res = await fetch(apiUrl("/eliminar-usuario"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -544,8 +543,7 @@ async function asignarAlumno(
 
     try {
 
-        const res = await fetch(
-            "http://localhost:3000/asignar-alumno",
+        const res = await fetch(apiUrl("/asignar-alumno"),
             {
                 method: "POST",
                 headers: {
@@ -640,8 +638,9 @@ async function cargarSolicitudesMaterias() {
     try {
         // 1. Pedimos las solicitudes Y los asignados al mismo tiempo
         const [resSolicitudes, resAsignados] = await Promise.all([
-            fetch("http://localhost:3000/solicitudes-docentes"),
-            fetch("http://localhost:3000/docentes-asignados")
+fetch(apiUrl("/solicitudes-docentes")),
+fetch(apiUrl("/docentes-asignados"))
+
         ]);
 
         const docentesSolicitudes = await resSolicitudes.json();
@@ -689,7 +688,7 @@ async function asignarMateriaDocente(docenteId) {
     console.log("📌 Asignando materia:", { uid: docenteId, materiaId, materiaNombre });
 
     try {
-        const respuesta = await fetch("http://localhost:3000/asignar-materia", {
+        const respuesta = await fetch(apiUrl("/asignar-materia"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -853,7 +852,7 @@ async function guardarCambioMateria(idAsignacion) {
     const nuevaMateriaNombre = select.options[select.selectedIndex].text;
 
     try {
-        const response = await fetch("http://localhost:3000/editar-materia", {
+        const response = await fetch(apiUrl("/editar-materia"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -906,7 +905,7 @@ async function eliminarDocente(id) {
     if (!confirmar2) return;
 
     try {
-        const res = await fetch("http://localhost:3000/eliminar-docente", {
+        const res = await fetch(apiUrl("/eliminar-docente"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -942,7 +941,7 @@ function mostrarDocentesAsignados() {
 
 async function cargarParalelosParaHorario() {
     try {
-        const res = await fetch("http://localhost:3000/paralelos");
+        const res = await fetch(apiUrl("/paralelos"));
         const cursos = await res.json();
 
         console.log("📚 Cursos recibidos:", cursos);
@@ -989,7 +988,7 @@ async function cargarHorario() {
     if (!idCurso) return;
 
     const resHorario =
-        await fetch(`http://localhost:3000/horario/${idCurso}`);
+        await fetch(apiUrl(`/horario/${idCurso}`));
 
     const horario =
         await resHorario.json();
@@ -1266,9 +1265,7 @@ async function guardarControlAcademico(){
     fecha_cierre_conducta: fechaConducta
 });
 
-    const respuesta = await fetch(
-
-        "http://localhost:3000/guardar-control-academico",
+    const respuesta = await fetch(apiUrl("/guardar-control-academico"),
 
         {
 
@@ -1315,9 +1312,7 @@ async function guardarControlAcademico(){
 
 async function cargarControlAcademico(){
 
-    const respuesta = await fetch(
-        "http://localhost:3000/control-academico"
-    );
+    const respuesta = await fetch(apiUrl("/control-academico"));
 
     const datos = await respuesta.json();
 
