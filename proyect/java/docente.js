@@ -153,9 +153,7 @@ async function cargarPerfilDocente(){
         JSON.parse(localStorage.getItem("sesion"));
 
     const respuesta =
-        await fetch(
-            `http://localhost:3000/perfil-docente/${sesion.id}`
-        );
+        await fetch(apiUrl("/perfil-docente/${sesion.id}"));
 
     const datos =
         await respuesta.json();
@@ -516,8 +514,7 @@ async function guardarCalificacion(usuarioAlumno, nombreAlumno) {
 
     try {
 
-        const respuesta = await fetch(
-            "http://localhost:3000/guardar-conducta",
+        const respuesta = await ffetch(apiUrl("/guardar-conducta"),
             {
                 method: "POST",
                 headers: {
@@ -827,8 +824,7 @@ async function guardarNotaDocente(usuarioAlumno, nombreAlumno) {
 
     try {
 
-        const respuesta = await fetch(
-            "http://localhost:3000/guardar-nota",
+        const respuesta = await fetch(apiUrl("/guardar-nota"),
             {
                 method: "POST",
                 headers: {
@@ -871,9 +867,8 @@ async function cargarMateriasDocente(selectId){
         JSON.parse(localStorage.getItem("sesion"));
 
     const respuesta =
-        await fetch(
-            `http://localhost:3000/materias-docente/${sesion.id}`
-        );
+        await fetch(apiUrl(`/materias-docente/${sesion.id}`
+        ));
 
     const datos =
         await respuesta.json();
@@ -913,8 +908,7 @@ async function publicarForoDocente() {
         return;
     }
 
-    await fetch(
-        "http://localhost:3000/crear-foro",
+    await fetch(apiUrl("/crear-foro"),
         {
             method:"POST",
             headers:{
@@ -940,9 +934,7 @@ async function publicarForoDocente() {
 async function cargarForoDocente() {
 
     const respuesta =
-        await fetch(
-            "http://localhost:3000/foros"
-        );
+        await fetch(apiUrl("/foros"));
 
     const foros =
         await respuesta.json();
@@ -974,8 +966,8 @@ async function cargarForoDocente() {
         let respuestasHTML = "";
 
         const respuestaRespuestas =
-            await fetch(
-                `http://localhost:3000/respuestas-foro/${f.id}`
+            await fetch(apiUrl(
+                `/respuestas-foro/${f.id}`
             );
 
         const respuestas =
@@ -1064,8 +1056,7 @@ async function eliminarForo(idForo) {
 
     try {
 
-        await fetch(
-            "http://localhost:3000/eliminar-foro",
+        await fetch(apiUrl("/eliminar-foro"),
             {
                 method:"POST",
                 headers:{
@@ -1093,8 +1084,8 @@ async function verificarFechaInicio() {
 
     try {
 
-        const respuesta = await fetch(
-            `http://localhost:3000/fecha-inicio/${sesion.id}`
+        const respuesta = await fetch(apiUrl(
+            `/fecha-inicio/${sesion.id}`)
         );
 
         const datos = await respuesta.json();
@@ -1131,8 +1122,7 @@ async function verificarFechaInicio() {
                 return false;
             }
 
-            const respuestaGuardar = await fetch(
-                "http://localhost:3000/guardar-fecha-inicio",
+            const respuestaGuardar = await fetch(apiUrl("/guardar-fecha-inicio"),
                 {
                     method: "POST",
                     headers: {
@@ -1192,9 +1182,7 @@ async function cargarCursosAsistencia() {
 
     try {
 
-        const respuesta = await fetch(
-            "http://localhost:3000/cursos-asistencia"
-        );
+        const respuesta = await fetch(apiUrl("/cursos-asistencia"));
         
         const cursos =
             await respuesta.json();
@@ -1268,9 +1256,9 @@ try{
     window.paraleloActual = paralelo;
     window.especialidadActual = carrera || "";
 
-    const respuesta = await fetch(
-        `http://localhost:3000/alumnos-asistencia?curso=${curso}&paralelo=${paralelo}&especialidad=${carrera || ""}`
-    );
+    const respuesta = await fetch(apiUrl(
+        `/alumnos-asistencia?curso=${curso}&paralelo=${paralelo}&especialidad=${carrera || ""}`
+    ));
 
     alumnos = await respuesta.json();
     window.alumnosActuales = alumnos;
@@ -1511,9 +1499,9 @@ async function cargarTablaHistorial(paralelo, alumnos) {
     let curso = partes[0];
     let paraleloReal = partes[1];
 
-const respuesta = await fetch(
-    `http://localhost:3000/asistencias-paralelo?curso=${curso}&paralelo=${paraleloReal}`
-);
+const respuesta = await fetch(apiUrl(
+    `/asistencias-paralelo?curso=${curso}&paralelo=${paraleloReal}`
+));
 
     const registros = await respuesta.json();
 
@@ -1673,8 +1661,7 @@ async function guardarAsistenciaDelDia(paralelo, carrera) {
                     ? "P"
                     : "A";
 
-            await fetch(
-                "http://localhost:3000/guardar-asistencia",
+            await fetch(apiUrl("/guardar-asistencia"),
                 {
                     method: "POST",
                     headers: {
@@ -2072,9 +2059,9 @@ async function guardarQuizziz() {
 
     try {
         // OBTENER LA MATERIA ASIGNADA AL DOCENTE
-        const respuestaMateria = await fetch(
-            `http://localhost:3000/materia-docente/${sesion.id}`
-        );
+        const respuestaMateria = await fetch(apiUrl(
+            `/materia-docente/${sesion.id}`
+        ));
 
         const datosMateria = await respuestaMateria.json();
 
@@ -2086,8 +2073,7 @@ async function guardarQuizziz() {
 
         console.log("📚 Materia asignada al docente:", datosMateria);
 
-        const respuesta = await fetch(
-            "http://localhost:3000/quizzes",
+        const respuesta = await fetch(apiUrl("/quizzes"),
             {
                 method: "POST",
                 headers: {
@@ -2152,9 +2138,9 @@ async function cargarResultadosQuizziz() {
 
     try {
 
-        const respuesta = await fetch(
-            `http://localhost:3000/resultados-quiz-docente/${sesion.id}`
-        );
+        const respuesta = await fetch(apiUrl(
+            `/resultados-quiz-docente/${sesion.id}`
+        ));
 
         if (!respuesta.ok) {
             throw new Error(`Error HTTP: ${respuesta.status}`);
@@ -2325,11 +2311,7 @@ function cerrarModal(modalId) {
 
 async function notasEstanBloqueadas(){
 
-    const respuesta = await fetch(
-
-        "http://localhost:3000/estado-control-academico"
-
-    );
+    const respuesta = await fetch(apiUrl("/estado-control-academico"));
 
     const datos = await respuesta.json();
 
