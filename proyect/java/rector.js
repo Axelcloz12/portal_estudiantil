@@ -1584,3 +1584,99 @@ async function asignarTodosNuevos() {
         alert("❌ Error al asignar alumnos.");
     }
 }
+
+// ============================================
+// CARGAR NUEVOS REGISTRADOS (ALUMNOS PENDIENTES)
+// ============================================
+async function cargarNuevosRegistrados() {
+    try {
+        const respuesta = await fetch(apiUrl("/alumnos-pendientes"));
+        const alumnos = await respuesta.json();
+
+        const contenedor = document.getElementById("nuevosUsuarios");
+        if (!contenedor) return;
+
+        contenedor.innerHTML = "";
+
+        if (alumnos.length === 0) {
+            contenedor.innerHTML = `
+                <div style="text-align:center; padding:20px; color:#666;">
+                    ✅ No hay alumnos pendientes de asignación.
+                </div>
+            `;
+            return;
+        }
+
+        alumnos.forEach(alumno => {
+            const div = document.createElement("div");
+            div.className = "alumno-pendiente";
+            div.style.cssText = `
+                background: #fff3cd;
+                border: 1px solid #ffc107;
+                border-radius: 10px;
+                padding: 12px 15px;
+                margin-bottom: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 10px;
+            `;
+
+            div.innerHTML = `
+                <div>
+                    <strong>${alumno.nombre}</strong>
+                    <span style="color:#666; font-size:14px; margin-left:10px;">
+                        📚 ${alumno.curso || 'Sin curso'} 
+                        ${alumno.especialidad ? `- ${alumno.especialidad}` : ''}
+                    </span>
+                </div>
+                <div>
+                    <select id="paralelo_${alumno.usuario_id}" style="padding:5px 10px; border-radius:5px; border:1px solid #ddd;">
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                    </select>
+                    <button onclick="asignarAlumnoIndividual(${alumno.usuario_id}, '${alumno.curso}', document.getElementById('paralelo_${alumno.usuario_id}').value)" 
+                            style="background:#28a745; color:white; border:none; padding:5px 12px; border-radius:5px; cursor:pointer; margin-left:5px;">
+                        ✅ Asignar
+                    </button>
+                </div>
+            `;
+
+            contenedor.appendChild(div);
+        });
+
+    } catch (error) {
+        console.error("❌ Error cargando nuevos registrados:", error);
+    }
+}
+
+// ============================================
+// ASIGNAR ALUMNO INDIVIDUAL
+// ============================================
+async function asignarAlumnoIndividual(usuario_id, curso, paralelo) {
+    try {
+        const res = await fetch(apiUrl("/asignar-alumno"), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                usuario_id: usuario_id,
+                curso: curso,
+                paralelo: paralelo
+            })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            alert("✅ Alumno asignado correctamente");
+            cargarNuevosRegistrados();
+            cargarCarpetasParalelos();
+        } else {
+            alert("❌ Error al asignar: " + (data.mensaje || "Error desconocido"));
+        }
+    } catch (error) {
+        console.error("❌ Error:", error);
+        alert("❌ Error de conexión");
+    }
+}
