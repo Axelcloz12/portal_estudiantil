@@ -192,8 +192,8 @@ async function solicitarRestablecimiento(){
 
         const sesion = JSON.parse(localStorage.getItem("sesion"));
 
-        const respuesta = await fetch(
-            "http://localhost:3000/solicitar-restablecer-asistencia",
+        const respuesta = await fetch(apiUrl(
+            "/solicitar-restablecer-asistencia"),
             {
                 method:"POST",
                 headers:{
@@ -597,8 +597,8 @@ if(sesionSoporte){
 
     try{
 
-        const respuesta = await fetch(
-            "http://localhost:3000/tickets-soporte"
+        const respuesta = await fetch(apiUrl(
+            "/tickets-soporte")
         );
 
         const tickets = await respuesta.json();
@@ -842,8 +842,8 @@ async function verMiTicket(id){
 
     try{
 
-        const respuesta = await fetch(
-            "http://localhost:3000/tickets-soporte"
+        const respuesta = await fetch(apiUrl(
+            "/tickets-soporte")
         );
 
         const tickets = await respuesta.json();
@@ -907,9 +907,9 @@ async function verificarRespuestasSoporte(){
 
     try{
 
-        const respuesta = await fetch(
+        const respuesta = await fetch(apiUrl(
 
-            `http://localhost:3000/notificaciones-soporte/${sesion.id}`
+            `/notificaciones-soporte/${sesion.id}`)
 
         );
 
@@ -1916,9 +1916,9 @@ async function verArchivoRespaldo(respaldo, archivo){
     archivoActual = archivo;
     try{
 
-        const respuesta = await fetch(
+        const respuesta = await fetch(apiUrl(
 
-            `http://localhost:3000/respaldos/${respaldo}/${archivo}`
+            `/respaldos/${respaldo}/${archivo}`)
 
         );
 
