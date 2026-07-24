@@ -243,17 +243,17 @@ async function registrar() {
 
         // ✅ CORREGIDO: Usar ruta relativa en lugar de localhost
         const existeRes = await fetch(
-            "/verificar-usuario",  // 👈 CAMBIADO
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    nombre: nombreCompleto
-                })
-            }
-        );
+    apiUrl("/verificar-usuario"),
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            nombre: nombreCompleto
+        })
+    }
+);
 
         const existeData =
             await existeRes.json();
