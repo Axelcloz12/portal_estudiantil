@@ -42,12 +42,9 @@ const upload = multer({
 const conexion = mysql.createConnection({
     uri: process.env.DATABASE_URL,
     ssl: {
-        rejectUnauthorized: false  // IMPORTANTE para Railway
+        rejectUnauthorized: false
     },
-    connectTimeout: 15000,
-    // Aumentar límites para conexiones lentas
-    acquireTimeout: 15000,
-    timeout: 15000
+    connectTimeout: 15000 
 });
 
 
