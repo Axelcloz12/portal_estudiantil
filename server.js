@@ -36,7 +36,7 @@ const upload = multer({
     storage
 });
 // ============================================
-// CONEXIÓN A MYSQL EN RAILWAY
+// CONEXIÓN A MYSQL EN RAILWAY 
 // ============================================
 const conexion = mysql.createConnection({
     host: process.env.DB_HOST || "localhost",
