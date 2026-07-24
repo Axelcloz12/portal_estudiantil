@@ -1,9 +1,7 @@
 async function cargarForoAlumno() {
 
     const respuesta =
-    await fetch(
-        "http://localhost:3000/foros"
-    );
+    await fetch(apiUrl("/foros"))
 
     const foros =
     await respuesta.json();
