@@ -939,15 +939,15 @@
     </div>
 
     <!-- GESTIÓN DOCENTES -->
-<div id="gestDocentes" class="seccionRector" style="display:none;">
-    <div class="caja">
-        <h2>👨‍🏫 Gestión de Docentes</h2>
-        <p style="color:#666; margin-bottom:20px;">
-            Aquí puedes ver los docentes que han solicitado materias y asignarles una.
-        </p>
-        <div id="listaSolicitudesMaterias"></div>
+    <div id="gestDocentes" class="seccionRector" style="display:none;">
+        <div class="caja">
+            <h2>👨‍🏫 Gestión de Docentes</h2>
+            <p style="color:#666; margin-bottom:20px;">
+                Aquí puedes ver los docentes que han solicitado materias y asignarles una.
+            </p>
+            <div id="listaSolicitudesMaterias"></div>
+        </div>
     </div>
-</div>
 
     <!-- DOCENTES ASIGNADOS -->
     <div id="seccionDocentesAsignados" class="seccionRector" style="display:none;">
@@ -956,6 +956,39 @@
             <div id="listaDocentesAsignados"></div>
         </div>
     </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL PARA VER ALUMNOS DE UN PARALELO     -->
+    <!-- ========================================== -->
+    <div id="modalAlumnos" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; justify-content:center; align-items:center;">
+        <div style="background:white; border-radius:20px; padding:30px; max-width:700px; width:90%; max-height:80%; overflow-y:auto; position:relative; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+            
+            <!-- Botón cerrar -->
+            <button onclick="document.getElementById('modalAlumnos').style.display='none'" 
+                    style="position:absolute; top:10px; right:15px; background:transparent; border:none; font-size:30px; cursor:pointer; color:#e74c3c; font-weight:bold;">
+                ✕
+            </button>
+            
+            <!-- Título -->
+            <h2 id="modalTitulo" style="margin-top:0; color:#2c3e50;">📂 Alumnos</h2>
+            
+            <!-- Lista de alumnos -->
+            <div id="listaAlumnosModal" style="margin-top:20px;">
+                <p style="text-align:center; color:#666;">Cargando alumnos...</p>
+            </div>
+            
+            <!-- Botón cerrar abajo -->
+            <div style="text-align:center; margin-top:20px; border-top:1px solid #eee; padding-top:20px;">
+                <button onclick="document.getElementById('modalAlumnos').style.display='none'" 
+                        style="background:#e74c3c; color:white; border:none; padding:10px 25px; border-radius:10px; cursor:pointer; font-weight:bold;">
+                    ❌ Cerrar
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
+</div> <!-- Cierra panelRector -->
 
     <!-- HORARIOS -->
 <div id="gestHorarios" class="seccionRector" style="display:none;">
