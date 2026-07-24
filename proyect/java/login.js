@@ -49,8 +49,8 @@ async function login() {
         return;
     }
 
-    try {
-        const respuesta = await fetch("http://localhost:3000/login", {
+        try {
+        const respuesta = await fetch(apiUrl("/login"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
