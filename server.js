@@ -64,6 +64,36 @@ function verificarCarpetaRespaldos() {
     }
 
 }
+
+// ============================================
+// FUNCIÓN PARA CONSULTAS SEGURAS
+// ============================================
+function querySegura(sql, params, callback) {
+    // Verificar conexión
+    if (!conexion || conexion.state !== 'authenticated') {
+        console.warn("⚠️ Conexión no disponible para query");
+        if (typeof callback === 'function') {
+            callback(new Error("Conexión no disponible"), null);
+        }
+        return;
+    }
+
+    conexion.query(sql, params, (err, results) => {
+        if (err) {
+            console.error("❌ Error en query segura:", err.message);
+            // Si es error de conexión, intentar reconectar
+            if (err.code === 'PROTOCOL_CONNECTION_LOST' || err.fatal) {
+                console.log("🔄 Reconectando por error...");
+                conectarMySQL();
+            }
+        }
+        if (typeof callback === 'function') {
+            callback(err, results);
+        }
+    });
+}
+
+
 function obtenerFechaRespaldo() {
 
     const ahora = new Date();
