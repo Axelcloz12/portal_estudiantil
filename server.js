@@ -514,6 +514,43 @@ function conectarMySQL() {
 conectarMySQL();
 
 // ============================================
+// ENDPOINT DE PRUEBA - SIEMPRE RESPONDE
+// ============================================
+app.get("/api/test", (req, res) => {
+    res.json({
+        success: true,
+        message: "El servidor está funcionando",
+        dbState: conexion ? conexion.state : 'no connection',
+        time: new Date().toISOString()
+    });
+});
+
+app.get("/api/db-test", (req, res) => {
+    if (!conexion || conexion.state !== 'authenticated') {
+        return res.status(500).json({
+            success: false,
+            error: "Base de datos no conectada",
+            dbState: conexion ? conexion.state : 'no connection'
+        });
+    }
+    
+    conexion.query("SELECT 1 as test", (err, results) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                error: err.message
+            });
+        }
+        res.json({
+            success: true,
+            message: "Base de datos funcionando",
+            result: results[0]
+        });
+    });
+});
+
+
+// ============================================
 // MANEJAR ERRORES DE CONEXIÓN
 // ============================================
 conexion.on('error', (err) => {
