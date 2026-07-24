@@ -23,8 +23,8 @@ async function obtenerAsistencias() {
 
     try {
 
-        const res = await fetch(
-            "http://localhost:3000/asistencias"
+        const res = await fetch(apiUrl(
+            "/asistencias")
         );
 
         return await res.json();
