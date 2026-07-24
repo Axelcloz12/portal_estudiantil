@@ -459,20 +459,37 @@ function crearUsuarioSoporte(callback){
 }
 
 
-conexion.connect((error) => {
+// ============================================
+// VERIFICAR CONEXIÓN CON RECONEXIÓN AUTOMÁTICA
+// ============================================
+function conectarMySQL() {
+    console.log("🔄 Intentando conectar a MySQL en Railway...");
+    console.log("   Host:", process.env.DB_HOST || "localhost");
+    console.log("   User:", process.env.DB_USER || "root");
+    console.log("   Database:", process.env.DB_NAME || "portal_estudiantil");
+    
+    conexion.connect((error) => {
+        if (error) {
+            console.error("❌ Error de conexión a MySQL:", error.message);
+            console.log("⏳ Reintentando en 5 segundos...");
+            setTimeout(conectarMySQL, 5000);
+        } else {
+            console.log("✅ Conectado exitosamente a MySQL en Railway");
+            verificarCarpetaRespaldos();
+        }
+    });
+}
 
-    if (error) {
+// Iniciar conexión
+conectarMySQL();
 
-        console.log("Error de conexión:", error);
-
-    } else {
-
-        console.log("Conectado a MySQL");
-
-        verificarCarpetaRespaldos();
-
+// Manejar desconexiones
+conexion.on('error', (err) => {
+    console.error('❌ Error en conexión MySQL:', err.message);
+    if (err.code === 'PROTOCOL_CONNECTION_LOST' || err.fatal) {
+        console.log('🔄 Reconectando...');
+        setTimeout(conectarMySQL, 3000);
     }
-
 });
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/proyect/index.html");
