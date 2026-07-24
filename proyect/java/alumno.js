@@ -477,8 +477,7 @@ async function calcularPorcentajes(paralelo, alumnos) {
     let curso = partes[0];
     let paraleloReal = partes[1];
 
-    const respuesta = await fetch(apiUrl("/asistencias-paralelo?curso=${curso}&paralelo=${paraleloReal}`
-    );
+    const respuesta = await fetch(apiUrl(`/asistencias-paralelo?curso=${curso}&paralelo=${paraleloReal}`));
 
     const registros = await respuesta.json();
 console.log("REGISTROS:", registros);
