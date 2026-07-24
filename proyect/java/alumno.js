@@ -1,7 +1,7 @@
 async function cargarForoAlumno() {
 
     const respuesta =
-    await fetch(apiUrl("/foros"))
+    await fetch(apiUrl("/foros"));
 
     const foros =
     await respuesta.json();
@@ -32,9 +32,7 @@ async function cargarForoAlumno() {
         let respuestasHTML = "";
 
 const respuestaRespuestas =
-    await fetch(
-        `http://localhost:3000/respuestas-foro/${f.id}`
-    );
+    await fetchfetch(apiUrl("/respuestas-foro/${f.id}"));
 
 const respuestas =
     await respuestaRespuestas.json();
@@ -142,8 +140,7 @@ async function responderDebate(idForo) {
 
     try {
 
-        await fetch(
-            "http://localhost:3000/responder-foro",
+        await fetch(apiUrl("/responder-foro"),
             {
                 method: "POST",
                 headers: {
@@ -182,9 +179,7 @@ async function cargarConductaAlumno() {
 
     try {
 
-        const respuesta = await fetch(
-            `http://localhost:3000/conductas/${user.id}`
-        );
+        const respuesta = await fetch(apiUrl("/conductas/${user.id}"));
 
         const conductasAlumno = await respuesta.json();
 
@@ -277,7 +272,7 @@ async function guardarPerfil() {
 
     try {
 
-        const respuesta = await fetch("http://localhost:3000/guardar-perfil", {
+        const respuesta = await fetch(apiUrl("/guardar-perfil"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -316,9 +311,7 @@ async function verPerfilDocente(idDocente){
 
     try{
 
-        const respuesta = await fetch(
-            `http://localhost:3000/perfil-docente/${idDocente}`
-        );
+        const respuesta = await fetch(apiUrl("/perfil-docente/${idDocente}"));
 
         const datos = await respuesta.json();
 
@@ -385,9 +378,7 @@ async function verificarNombreReal(){
     try {
 
         const respuesta =
-            await fetch(
-                `http://localhost:3000/perfil/${sesion.id}`
-            );
+            await fetch(apiUrl("/perfil/${sesion.id}"))
 
         const perfil = await respuesta.json();
         console.log("PERFIL:", perfil);
@@ -486,8 +477,7 @@ async function calcularPorcentajes(paralelo, alumnos) {
     let curso = partes[0];
     let paraleloReal = partes[1];
 
-    const respuesta = await fetch(
-    `http://localhost:3000/asistencias-paralelo?curso=${curso}&paralelo=${paraleloReal}`
+    const respuesta = await fetch(apiUrl("/asistencias-paralelo?curso=${curso}&paralelo=${paraleloReal}`
     );
 
     const registros = await respuesta.json();
@@ -555,9 +545,7 @@ async function calcularPromedios() {
 
     if (!user) return;
 
-    const respuesta = await fetch(
-        `http://localhost:3000/notas/${user.id}`
-    );
+    const respuesta = await fetch(apiUrl("/notas/${user.id}"));
 
     const notasAlumno = await respuesta.json();
     
@@ -654,7 +642,7 @@ async function cargarMateriasAlumno() {
 
     try {
 
-        const respuesta = await fetch("http://localhost:3000/docentes-asignados");
+        const respuesta = await fetch(apiUrl("/docentes-asignados"));
 
         const docentesAsignados = await respuesta.json();
 
@@ -714,9 +702,7 @@ async function cargarQuizzizAlumno() {
     try{
 
         const respuesta =
-            await fetch(
-                "http://localhost:3000/quizzes"
-            );
+            await fetch(apiUrl("/quizzes"));
 
         const quizzes =
             await respuesta.json();
@@ -792,9 +778,7 @@ async function iniciarQuizziz(id) {
 
         // Verificar si ya respondió
         const verificacion =
-            await fetch(
-                `http://localhost:3000/quiz-respondido/${id}/${sesion.id}`
-            );
+            await fetch(apiUrl("/quiz-respondido/${id}/${sesion.id}"));
 
         const estado =
             await verificacion.json();
@@ -809,9 +793,7 @@ async function iniciarQuizziz(id) {
         }
 
         const respuesta =
-            await fetch(
-                `http://localhost:3000/quizzes/${id}`
-            );
+            await fetch(apiUrl("/quizzes/${id}"));
 
         const quizziz =
             await respuesta.json();
@@ -1055,8 +1037,7 @@ switch(p.respuesta_correcta){
 
     try{
 
-        await fetch(
-            "http://localhost:3000/resultados_quiz",
+        await fetch(apiUrl("/resultados_quiz"),
             {
                 method:"POST",
                 headers:{
@@ -1101,7 +1082,7 @@ async function cargarHorarioAlumno() {
     }
 
     try {
-        const res = await fetch(`http://localhost:3000/horario-alumno/${sesion.id}`);
+        const res = await fetch(apiUrl("/horario-alumno/${sesion.id}"));
         
         if (!res.ok) {
             console.error("❌ Error en la respuesta:", res.status);
