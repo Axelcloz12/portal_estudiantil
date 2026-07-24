@@ -1,16 +1,19 @@
 async function obtenerTodosAlumnos() {
-
     try {
-
-        const res = await fetch("http://localhost:3000/usuarios");
+        const res = await fetch(apiUrl("/usuarios"));
         const usuarios = await res.json();
-
-        return usuarios.filter(
-            u => u.rol === "alumno"
-        );
-
+        return usuarios.filter(u => u.rol === "alumno");
     } catch (error) {
+        console.error(error);
+        return [];
+    }
+}
 
+async function obtenerAsistencias() {
+    try {
+        const res = await fetch(apiUrl("/asistencias"));
+        return await res.json();
+    } catch(error) {
         console.error(error);
         return [];
     }
