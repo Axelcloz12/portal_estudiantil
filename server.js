@@ -516,7 +516,9 @@ function conectarMySQL() {
 // Iniciar conexión
 conectarMySQL();
 
-// Manejar desconexiones
+// ============================================
+// MANEJAR ERRORES DE CONEXIÓN
+// ============================================
 conexion.on('error', (err) => {
     console.error('❌ Error en conexión MySQL:', err.message);
     if (err.code === 'PROTOCOL_CONNECTION_LOST' || err.fatal) {
@@ -524,6 +526,9 @@ conexion.on('error', (err) => {
         setTimeout(conectarMySQL, 3000);
     }
 });
+
+// Iniciar conexión
+conectarMySQL();
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/proyect/index.html");
 });
