@@ -1939,7 +1939,7 @@ async function mostrarPerfilProfesor(idDocente){
 
     const respuesta =
         await fetch(apiUrl(
-            `/perfil-docente/${idDocente}`
+            `/perfil-docente/${idDocente}`)
         );
 
     const datos =
