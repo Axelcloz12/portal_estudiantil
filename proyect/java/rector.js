@@ -90,7 +90,7 @@ async function cargarCarpetasParalelos() {
     try {
 
         // Obtener los alumnos reales
-        const res = await fetch("http://localhost:3000/perfiles");
+        const res = await fetch(apiUrl("/perfiles");
         const alumnos = await res.json();
 
         const container = document.getElementById("carpetasParalelos");
@@ -271,7 +271,7 @@ async function verAlumnosParalelo(clave) {
 
     try {
 
-        const res = await fetch("http://localhost:3000/perfiles");
+        const res = await fetch(apiUrl("/perfiles");
         const perfiles = await res.json();
 
         console.log("Clave:", clave);
