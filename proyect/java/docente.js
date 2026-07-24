@@ -153,7 +153,7 @@ async function cargarPerfilDocente(){
         JSON.parse(localStorage.getItem("sesion"));
 
     const respuesta =
-        await fetch(apiUrl("/perfil-docente/${sesion.id}"));
+        await fetch(apiUrl(`/perfil-docente/${sesion.id}`));
 
     const datos =
         await respuesta.json();
